@@ -1,0 +1,81 @@
+"""
+Class created to handle wav files
+"""
+import struct
+import wave
+from scipy import signal
+import numpy
+import matplotlib.pyplot as plt
+
+
+class WavFileHelper():
+    def read_file_props(self, file):
+        """
+        read file
+        """
+        wave_file = open(file, "rb")
+
+        riff = wave_file.read(12)
+        fmt = wave_file.read(36)
+
+        num_channels_string = fmt[10:12]
+        num_channels = struct.unpack('<H', num_channels_string)[0]
+
+        sample_rate_string = fmt[12:16]
+        sample_rate = struct.unpack("<I", sample_rate_string)[0]
+
+        bit_depth_string = fmt[22:24]
+        bit_depth = struct.unpack("<H", bit_depth_string)[0]
+
+        return (num_channels, sample_rate, bit_depth)
+
+    def signal(self, filename, sample_frequency=16000):
+        """ draw signal wave file and sectrum of signal """
+        signal_wave = wave.open(filename, 'r')
+
+        data = numpy.fromstring(signal_wave.readframes(sample_frequency),
+                                dtype=numpy.int16)
+
+        sig = signal_wave.readframes(-1)
+        sig = numpy.fromstring(sig, 'Int16')
+        return sig
+
+    def plot_wave_spectrum(self, signals, plots=1):
+        """ plot wave and spectrum of the signal wave file """
+        if signals and not isinstance(signals, list):
+            sig = signals
+            plt.figure(plots)
+
+            a = plt.subplot(211)
+            a.set_xlabel('time [s]')
+            a.set_ylabel('sample value [-]')
+            plt.plot(sig)
+
+            c = plt.subplot(212)
+            Pxx, freqs, bins, im = c.specgram(sig,
+                                              NFFT=1024,
+                                              Fs=16000,
+                                              noverlap=900)
+            c.set_xlabel('Time')
+            c.set_ylabel('Frequency')
+            plt.show()
+
+        if signals:
+            samples = list(range(len(signals)))
+
+            for sample, sig in list(zip(samples, signals)):
+                plt.figure(sample)
+                a = plt.subplot(211)
+                a.set_xlabel('time [s]')
+                a.set_ylabel('sample value [-]')
+                plt.plot(sig)
+
+                c = plt.subplot(212)
+                Pxx, freqs, bins, im = c.specgram(sig,
+                                                  NFFT=1024,
+                                                  Fs=16000,
+                                                  noverlap=900)
+                c.set_xlabel('Time')
+                c.set_ylabel('Frequency')
+
+            plt.show()

@@ -2,3 +2,4 @@ pylint
 pandas
 librosa
 numpy
+matplotlib
