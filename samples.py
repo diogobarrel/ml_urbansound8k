@@ -1,4 +1,6 @@
-# Load various imports
+"""
+draw sample1 waves and spectogram
+"""
 import os
 import pandas
 
@@ -8,9 +10,7 @@ from host.features import host_path
 urbansound8k_sample = host_path + 'UrbanSound8K/sample/'
 sample_metadata = pandas.read_csv(host_path +
                                   'UrbanSound8K/sample/sample_metadata.csv')
-"""
-draw sample1 waves and spectogram
-"""
+
 wavfilehelper = WavFileHelper()
 signals = []
 for index, row in sample_metadata.iterrows():

@@ -1,5 +1,16 @@
 pylint
+
+# Data
 pandas
-librosa
 numpy
+scipy
+
+# Plot
 matplotlib
+PyQt5
+
+# Audio
+pyaudio
+simpleaudio
+librosa
+wave
