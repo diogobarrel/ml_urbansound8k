@@ -18,3 +18,4 @@ wave
 # Machine Learning
 sklearn
 keras
+tensorflow
