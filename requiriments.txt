@@ -14,3 +14,7 @@ pyaudio
 simpleaudio
 librosa
 wave
+
+# Machine Learning
+sklearn
+keras

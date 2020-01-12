@@ -54,32 +54,13 @@ class WavFileHelper():
         return sig
 
 
-@timeit
-def plot_wave_spectrum(self, signals, plots=1):
-    """ plot wave and spectrum of the signal wave file """
-    if signals and not isinstance(signals, list):
-        sig = signals
-        plt.figure(plots)
+    @timeit
+    def plot_wave_spectrum(self, signals, plots=1):
+        """ plot wave and spectrum of the signal wave file """
+        if signals and not isinstance(signals, list):
+            sig = signals
+            plt.figure(plots)
 
-        a = plt.subplot(211)
-        a.set_xlabel('time [s]')
-        a.set_ylabel('sample value [-]')
-        plt.plot(sig)
-
-        c = plt.subplot(212)
-        Pxx, freqs, bins, im = c.specgram(sig,
-                                          NFFT=1024,
-                                          Fs=16000,
-                                          noverlap=900)
-        c.set_xlabel('Time')
-        c.set_ylabel('Frequency')
-        plt.show()
-
-    if signals:
-        samples = list(range(len(signals)))
-
-        for sample, sig in list(zip(samples, signals)):
-            plt.figure(sample)
             a = plt.subplot(211)
             a.set_xlabel('time [s]')
             a.set_ylabel('sample value [-]')
@@ -87,13 +68,32 @@ def plot_wave_spectrum(self, signals, plots=1):
 
             c = plt.subplot(212)
             Pxx, freqs, bins, im = c.specgram(sig,
-                                              NFFT=1024,
-                                              Fs=16000,
-                                              noverlap=900)
+                                            NFFT=1024,
+                                            Fs=16000,
+                                            noverlap=900)
             c.set_xlabel('Time')
             c.set_ylabel('Frequency')
+            plt.show()
 
-        plt.show()
+        if signals:
+            samples = list(range(len(signals)))
+
+            for sample, sig in list(zip(samples, signals)):
+                plt.figure(sample)
+                a = plt.subplot(211)
+                a.set_xlabel('time [s]')
+                a.set_ylabel('sample value [-]')
+                plt.plot(sig)
+
+                c = plt.subplot(212)
+                Pxx, freqs, bins, im = c.specgram(sig,
+                                                NFFT=1024,
+                                                Fs=16000,
+                                                noverlap=900)
+                c.set_xlabel('Time')
+                c.set_ylabel('Frequency')
+
+            plt.show()
 
 
 @timeit
@@ -119,6 +119,12 @@ def load_audio_data():
 
 @timeit
 def load_features_data():
+    """Load files in a list of paths and extract their audio features
+    
+    
+    Returns:
+        features_df: pandas.Dataframe
+    """    
     features = []
     wavfilehelper = WavFileHelper()
 
