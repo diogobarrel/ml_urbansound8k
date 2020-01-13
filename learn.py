@@ -40,18 +40,17 @@ we also compare the performance of the CNN with a more traditional MLP.
 @mikesmales
 """
 
-num_rows = 30
-num_columns = 174
+num_rows = 40
+num_columns = 175
 num_channels = 1
 
+x_train = x_train.reshape(num_rows, num_columns, num_channels)
 x_test = x_test.reshape(x_test.shape[0], num_rows, num_columns, num_channels)
-x_train = x_train.reshape(x_train.shape[0], num_rows, num_columns,
-                          num_channels)
 
 num_labels = yy.shape[1]
 filter_size = 2
 
-## Construct model
+# Construct model
 model = Sequential()
 model.add(
     Conv2D(filters=16,
