@@ -5,7 +5,6 @@ import os
 import struct
 
 import wave
-import simpleaudio
 
 import pandas
 import numpy
@@ -144,59 +143,3 @@ def load_features_data():
     featuresdf = pandas.DataFrame(features, columns=['feature', 'class_label'])
 
     return featuresdf
-
-
-@timeit
-def play_sound(self, file_path):
-    """
-    WAV files contain a sequence of bits representing the raw audio data,
-    as well as headers with metadata in RIFF (Resource Interchange File Format)
-    format.
-
-    For CD recordings, the industry standard is to store each audio
-    sample (an individual audio datapoint relating to air pressure) as a
-    16-bit value, at 44100 samples per second.
-
-    To reduce file size, it may be sufficient to store some recordings
-    (for example of human speech) at a lower sampling rate, such as
-    8000 samples per second, although this does mean that higher sound
-    frequencies may not be as accurately represented.
-
-    A few of the libraries discussed in this tutorial play and record bytes objects
-    whereas others use NumPy arrays to store raw audio data. 
-
-    @realpython
-    """
-    if not file_path:
-        return
-
-    wave_obj = simpleaudio.WaveObject.from_wave_file(file_path)
-    play_obj = wave_obj.play()
-    play_obj.wait_done()  # Wait untill the sound has finished playing
-
-
-@timeit
-def pitch():
-    """
-    creates and play a random pitch
-    """
-    frequency = 440  # Our played note will be 440 Hz
-    fs = 44100  # 44100 samples per second
-    seconds = 3  # Note duration of 3 seconds
-
-    # Generate array with seconds*sample_rate steps, ranging between 0 and seconds
-    t = numpy.linspace(0, seconds, seconds * fs, False)
-
-    # Generate a 440 Hz sine wave
-    note = numpy.sin(frequency * t * 2 * numpy.pi)
-
-    # Ensure that highest value is in 16-bit range
-    audio = note * (2**15 - 1) / numpy.max(numpy.abs(note))
-    # Convert to 16-bit data
-    audio = audio.astype(numpy.int16)
-
-    # Start playback
-    play_obj = simpleaudio.play_buffer(audio, 1, 2, fs)
-
-    # Wait for playback to finish before exiting
-    play_obj.wait_done()
